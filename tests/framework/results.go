@@ -176,6 +176,7 @@ func NewCSVResultsWriter(resultsDir, fileName string, resultHeaders ...string) (
 	writer := csv.NewWriter(file)
 
 	if err = writer.Write(resultHeaders); err != nil {
+		file.Close()
 		return nil, nil, err
 	}
 
