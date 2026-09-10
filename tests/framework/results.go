@@ -173,12 +173,20 @@ func NewCSVResultsWriter(resultsDir, fileName string, resultHeaders ...string) (
 		return nil, nil, err
 	}
 
-	writer := csv.NewWriter(file)
-
-	if err = writer.Write(resultHeaders); err != nil {
-		file.Close()
+	writer, err := newCSVWriter(file, resultHeaders...)
+	if err != nil {
+		_ = file.Close()
 		return nil, nil, err
 	}
 
 	return file, writer, nil
+}
+
+func newCSVWriter(destination io.WriteCloser, resultHeaders ...string) (*csv.Writer, error) {
+	writer := csv.NewWriter(destination)
+	if err := writer.Write(resultHeaders); err != nil {
+		_ = destination.Close()
+		return nil, err
+	}
+	return writer, nil
 }
