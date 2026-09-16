@@ -45,6 +45,10 @@ jobs:
           working-directory: ${{ matrix.directory }}
           version: v2.13.2 # renovate: datasource=github-tags depName=golangci/golangci-lint
 
+      - name: Run gohawk
+        working-directory: ${{ matrix.directory }}
+        run: go run github.com/kojah/gohawk@v0.3.2 -enable-all -disable=goroutineownership ./...
+
   njs-lint:
     name: NJS Lint
     runs-on: ubuntu-24.04
